@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>SJ College Smart Parking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--tx:#14213d;--mut:#64708a;--pri:#7b1e3a;--pri2:#c8963e;--ok:#1fa35b;--bad:#d64545;--res:#9aa3b2;--bd:#e3e7f0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1420;--card:#192033;--tx:#eef1f8;--mut:#9aa6c0;--bd:#2a3350}}
+:root[data-theme="dark"]{--bg:#0f1420;--card:#192033;--tx:#eef1f8;--mut:#9aa6c0;--bd:#2a3350}
+*{box-sizing:inherit}html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:12px;padding:10px 16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--tx)}
+.logo b{display:block;font-size:15px;line-height:1.1}.logo small{color:var(--mut);font-size:11px}
+nav{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+nav a{padding:7px 11px;border-radius:99px;text-decoration:none;color:var(--mut);font-size:13px;font-weight:600;transition:.2s}
+nav a:hover,nav a.on{background:var(--pri);color:#fff}
+main{max-width:1050px;margin:0 auto;padding:20px 16px 60px;animation:in .4s}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.hero{background:linear-gradient(135deg,var(--pri),#3d0f1e 70%);color:#fff;border-radius:22px;padding:34px 26px;margin-bottom:18px;position:relative;overflow:hidden}
+.hero:after{content:"P";position:absolute;right:-10px;top:-40px;font:900 220px sans-serif;opacity:.07}
+.hero h1{margin:4px 0 6px;font-size:clamp(24px,5vw,38px)}.hero p{margin:0 0 18px;opacity:.9}
+.btn{border:0;border-radius:12px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer;background:var(--pri);color:#fff;transition:.2s;text-decoration:none;display:inline-block}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px #0003}.btn.g{background:var(--pri2);color:#2a1a00}.btn.o{background:transparent;border:1.5px solid var(--bd);color:var(--tx)}.btn.s{padding:6px 10px;font-size:12px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:18px;margin-bottom:14px;transition:.2s}
+.grid>.card{margin:0}.card.h:hover{transform:translateY(-3px);box-shadow:0 8px 22px #0001}
+.stat b{font-size:30px;display:block}.stat span{color:var(--mut);font-size:13px}
+h2{margin:6px 0 12px}h3{margin:0 0 10px}
+.slots{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.slot{width:58px;height:62px;border-radius:12px;border:2px solid transparent;font-weight:700;font-size:13px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:.2s;font-family:inherit}
+.slot small{font-size:16px;font-weight:400}
+.slot.available{background:var(--ok)}.slot.occupied{background:var(--bad);cursor:not-allowed}.slot.reserved{background:var(--res);cursor:not-allowed}
+.slot.available:hover{transform:scale(1.08)}.slot.sel{outline:3px solid var(--pri2);outline-offset:2px;transform:scale(1.1);animation:pulse 1s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px #c8963e44}}
+.slots.mini .slot{width:36px;height:40px;font-size:10px;cursor:default;pointer-events:none}.slots.mini small{display:none}
+.leg{display:flex;gap:14px;font-size:12px;color:var(--mut);flex-wrap:wrap}.leg i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px}
+form{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+label{font-size:12px;font-weight:700;color:var(--mut);display:block}
+input,select{width:100%;margin-top:4px;padding:10px 12px;border-radius:10px;border:1.5px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit}
+input:focus,select:focus{outline:0;border-color:var(--pri2)}form .full{grid-column:1/-1}
+.tabs{display:flex;gap:8px;margin-bottom:14px}.tabs .btn{flex:0 0 auto}
+.tag{padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;background:var(--bd)}.tag.ok{background:#1fa35b33;color:var(--ok)}.tag.bad{background:#d6454533;color:var(--bad)}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--bd);white-space:nowrap}th{color:var(--mut);font-size:11px;text-transform:uppercase}
+.pass{border:2px dashed var(--pri2);text-align:center;animation:pop .5s}
+@keyframes pop{from{transform:scale(.9);opacity:0}}
+.pass .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;text-align:left;max-width:360px;margin:12px auto}.kv span{color:var(--mut)}
+#qr{display:inline-block;padding:8px;background:#fff;border-radius:10px}
+#toasts{position:fixed;right:12px;top:calc(70px + env(safe-area-inset-top,0px));display:grid;gap:8px;z-index:30;max-width:calc(100% - 24px)}
+.toast{background:var(--card);border-left:5px solid var(--ok);border-radius:10px;padding:10px 14px;box-shadow:0 6px 20px #0003;animation:in .3s}.toast.bad{border-color:var(--bad)}
+.modal{position:fixed;inset:0;background:#000a;display:grid;place-items:center;z-index:40;padding:16px}.modal .card{max-width:380px;text-align:center;margin:0}
+.muted{color:var(--mut)}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+</style></head><body>
+<header>
+<a class="logo" href="#/"><svg width="44" height="44" viewBox="0 0 44 44"><rect width="44" height="44" rx="12" fill="#7b1e3a"/><rect x="5" y="5" width="34" height="34" rx="8" fill="none" stroke="#c8963e" stroke-width="1.5"/><text x="22" y="19" text-anchor="middle" font-size="10" font-weight="900" fill="#fff" font-family="sans-serif">SJC</text><circle cx="22" cy="29" r="7" fill="#c8963e"/><text x="22" y="33" text-anchor="middle" font-size="11" font-weight="900" fill="#7b1e3a" font-family="sans-serif">P</text></svg><span><b>St. Joseph's College</b><small>🚗 Smart Parking</small></span></a>
+<nav id="nav"></nav></header>
+<div id="toasts"></div><main id="app"></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),KEY="sjc_parking_v1",CFG={student:{n:"Student",p:"S",c:10,r:["S10"],icon:"🎓",id:"Register Number"},staff:{n:"Staff",p:"T",c:5,r:["T05"],icon:"👩‍🏫",id:"Staff ID"},visitor:{n:"Visitor",p:"V",c:5,r:["V05"],icon:"🧑‍💼",id:"Phone"}};
+const FORMS={student:[["name","Student Name"],["id","Register Number"],["dept","Department"],["year","Year","select:1st,2nd,3rd,4th,5th"],["phone","Phone Number","tel"]],
+staff:[["name","Staff Name"],["id","Staff ID"],["dept","Department"],["phone","Phone Number","tel"]],
+visitor:[["name","Visitor Name"],["phone","Phone Number","tel"],["purpose","Purpose of Visit"],["meet","Person/Department Visiting"]]};
+let D,sel=null,mode="new",pending=null,admin=false,myId="",q="";
+function seed(){const s={};for(const t in CFG)for(let i=1;i<=CFG[t].c;i++){const id=CFG[t].p+String(i).padStart(2,"0");s[id]={t,s:CFG[t].r.includes(id)?"reserved":"available"}}return{students:{},staff:{},visitors:{},slots:s,records:[],notes:[]}}
+function load(){try{D=JSON.parse(localStorage.getItem(KEY))}catch(e){}D=D||seed()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){toast("Storage full – remove old licence uploads","bad")}}
+function toast(m,k){const t=document.createElement("div");t.className="toast "+(k||"");t.textContent=m;$("#toasts").append(t);setTimeout(()=>t.remove(),4200)}
+function note(m,k){D.notes.unshift({m,k,at:now()});D.notes=D.notes.slice(0,50);toast(m,k)}
+const now=()=>new Date().toLocaleString(),cnt=(t,s)=>Object.entries(D.slots).filter(([i,x])=>(!t||x.t==t)&&(!s||x.s==s)).length;
+const normVeh=v=>v.toUpperCase().replace(/[\s-]/g,""),okVeh=v=>/^[A-Z]{2}\d{1,2}[A-Z]{1,3}\d{4}$/.test(v);
+const store=t=>t=="student"?D.students:t=="staff"?D.staff:D.visitors;
+function slotMap(t,mini){return`<div class="slots ${mini?"mini":""}">`+Object.entries(D.slots).filter(([i,x])=>x.t==t).map(([i,x])=>`<button type="button" class="slot ${x.s} ${sel==i?"sel":""}" data-slot="${i}" title="${x.s}"><small>${x.s=="occupied"?"🚗":x.s=="reserved"?"🔒":"🅿️"}</small>${i}</button>`).join("")+"</div>"}
+const legend='<div class="leg"><span><i style="background:var(--ok)"></i>Available</span><span><i style="background:var(--bad)"></i>Occupied</span><span><i style="background:var(--res)"></i>Reserved</span></div>';
+function stats(){return`<div class="grid"><div class="card stat h">🅿️<b>${cnt()}</b><span>Total Slots</span></div><div class="card stat h" style="color:var(--ok)">✅<b>${cnt(0,"available")}</b><span>Available</span></div><div class="card stat h" style="color:var(--bad)">🚗<b>${cnt(0,"occupied")}</b><span>Occupied</span></div></div>`}
+function nav(){const r=location.hash||"#/";const L=[["#/","Home"],["#/park/student","Student Parking"],["#/park/staff","Staff Parking"],["#/park/visitor","Visitor Parking"],["#/availability","Availability"],["#/my","My Parking"],["#/about","About"],["#/admin","Admin Login"]];$("#nav").innerHTML=L.map(([h,n])=>`<a href="${h}" class="${r==h?"on":""}">${n}</a>`).join("")}
+function render(){nav();const r=(location.hash||"#/").split("/");const p=r[1]||"",a=$("#app");
+if(p=="")a.innerHTML=`<div class="hero"><b>🅿️ St. Joseph's College</b><h1>Smart Parking Management System</h1><p>A simple and smart way to manage parking at St. Joseph's College.</p><div class="row"><a class="btn g" href="#/park/student">🎓 Student Parking</a><a class="btn g" href="#/park/staff">👩‍🏫 Staff Parking</a><a class="btn g" href="#/park/visitor">🧑‍💼 Visitor Parking</a></div></div>${stats()}<h2>Parking Area Preview</h2><div class="card">${Object.keys(CFG).map(t=>`<b>${CFG[t].icon} ${CFG[t].n} Parking</b>${slotMap(t,1)}`).join("")}${legend}</div>`;
+else if(p=="availability")a.innerHTML=`<h2>Live Parking Availability</h2>${stats()}<br>${Object.keys(CFG).map(t=>`<div class="card"><h3>${CFG[t].icon} ${CFG[t].n} Parking <span class="tag ok">${cnt(t,"available")} free</span></h3>${slotMap(t,1)}</div>`).join("")}${legend}`;
+else if(p=="park")parkPage(r[2]);
+else if(p=="my")myPage();else if(p=="admin")adminPage();
+else a.innerHTML=`<div class="card"><h2>About</h2><p>SJ College Smart Parking lets students, staff and visitors register vehicles, view live slot availability, reserve a slot and receive a digital parking pass. Students register once and use <b>Returning Student</b> afterwards with just their Register Number or vehicle number.</p><p class="muted">Student, staff and visitor zones are separate. A slot can never be assigned to two vehicles.</p></div>`}
+function parkPage(t){if(!CFG[t])return;const a=$("#app"),isS=t=="student";
+const f=(mode=="ret"&&isS)?`<form id="lf"><div class="full"><label>Register Number or Vehicle Number<input name="k" required placeholder="e.g. 21CS045 or TN09AB1234" value="${myId}"></label></div><button class="btn">🔍 Find My Details</button></form>`:
+`<form id="rf">${FORMS[t].map(([n,l,ty])=>ty&&ty.startsWith("select")?`<label>${l}<select name="${n}">${ty.slice(7).split(",").map(o=>`<option>${o}</option>`).join("")}</select></label>`:`<label>${l}<input name="${n}" required ${ty?`type="${ty}"`:""} ${n=="phone"?'pattern="[0-9]{10}" title="10 digit number"':""}></label>`).join("")}
+<label>Vehicle Type<select name="vt"><option>Two-wheeler</option><option>Four-wheeler</option><option>Bicycle</option></select></label><label>Vehicle Number<input name="veh" required placeholder="TN09AB1234"></label><label>Driving Licence / Proof<input name="lic" type="file" accept="image/*,.pdf" required></label><label>Parking Slot Number<input name="slot" readonly required placeholder="Select from map below" value="${sel||""}"></label><div class="full"><button class="btn">Register &amp; Park</button></div></form>`;
+a.innerHTML=`<h2>${CFG[t].icon} ${CFG[t].n} Parking</h2>${isS?`<div class="tabs"><button class="btn ${mode=="new"?"":"o"}" data-mode="new">New Registration</button><button class="btn ${mode=="ret"?"":"o"}" data-mode="ret">↩ Returning Student</button></div>`:""}
+<div class="card">${f}</div><div id="welcome"></div><div class="card"><h3>Select a ${CFG[t].n} Slot</h3>${slotMap(t)}${legend}</div><div id="done"></div>`;
+if(pending&&pending.t==t)showWelcome()}
+function showWelcome(){$("#welcome").innerHTML=`<div class="card" style="border-color:var(--ok)"><h3>👋 Welcome back, ${pending.u.name}!</h3><p class="muted">${pending.u.id} • ${pending.u.dept} • ${pending.u.veh} (${pending.u.vt})</p><p>Pick a green slot below, then:</p><button class="btn" data-go="1">Park Now ${sel?"in "+sel:""}</button></div>`}
+function askConfirm(){if(!sel)return toast("Please select a slot first","bad");if(!pending)return;const m=document.createElement("div");m.className="modal";m.innerHTML=`<div class="card"><h2>Confirm Slot ${sel}?</h2><p class="muted">${pending.u.name} • ${pending.u.veh}</p><div class="row" style="justify-content:center"><button class="btn" id="y">Confirm</button><button class="btn o" id="n">Cancel</button></div></div>`;document.body.append(m);m.querySelector("#n").onclick=()=>m.remove();m.querySelector("#y").onclick=()=>{m.remove();doPark()}}
+function doPark(){const{t,u}=pending,s=D.slots[sel];if(!s||s.s!="available"||s.t!=t){note(`Slot ${sel} is unavailable. Choose another.`,"bad");sel=null;return render()}
+if(D.records.some(r=>r.veh==u.veh&&!r.exit)){return note("This vehicle is already parked.","bad")}
+const rec={id:Date.now(),t,name:u.name,uid:u.id,veh:u.veh,slot:sel,entry:now(),exit:null};D.records.unshift(rec);s.s="occupied";s.rec=rec.id;
+note(`Vehicle successfully parked in Slot ${sel}.`);save();const slot=sel;sel=null;pending=null;myId=u.id;render();
+$("#done").innerHTML=`<div class="card pass"><h2>✅ Parking Confirmed!</h2><div class="kv"><span>${t=="student"?"Student":t=="staff"?"Staff":"Visitor"} Name</span><b>${rec.name}</b><span>${CFG[t].id}</span><b>${rec.uid}</b><span>Vehicle Number</span><b>${rec.veh}</b><span>Parking Slot</span><b style="color:var(--ok);font-size:22px">${slot}</b><span>Parking Type</span><b>${CFG[t].n}</b><span>Time</span><b>${rec.entry}</b></div><p><b>Your vehicle is successfully parked.</b></p><div id="qr"></div><p class="muted">Digital parking pass</p></div>`;
+if(window.QRCode)new QRCode($("#qr"),{text:`SJC|${rec.uid}|${rec.veh}|${slot}|${rec.entry}`,width:120,height:120});$("#done").scrollIntoView({behavior:"smooth"})}
+function readFile(f){return new Promise(r=>{if(!f||f.size>150000)return r(f?"(file stored: "+f.name+")":"");const x=new FileReader;x.onload=()=>r(x.result);x.readAsDataURL(f)})}
+async function register(t,fd){const o=Object.fromEntries([...fd].filter(([k,v])=>k!="lic"));o.veh=normVeh(o.veh);o.name=o.name.trim();
+if(!okVeh(o.veh))return toast("Invalid vehicle number (e.g. TN09AB1234)","bad");
+if(!sel&&!o.slot)return toast("Please select a parking slot from the map","bad");
+let id=t=="visitor"?o.phone:o.id.trim().toUpperCase();o.id=id;const S=store(t);
+if(t=="student"&&Object.values(S).some(x=>x.id==id||x.veh==o.veh))return note("Already registered! Use the Returning Student option.","bad");
+if(t!="student"&&S[id]&&t=="staff")return note("Staff ID already registered.","bad");
+o.lic=await readFile(fd.get("lic"));o.created=now();S[id]=o;note("Registration successful!");pending={t,u:o};save();askConfirm()}
+function lookup(k){k=k.trim().toUpperCase().replace(/\s/g,"");const u=Object.values(D.students).find(x=>x.id==k||x.veh==k);
+if(!u)return note("No student found. Please register first.","bad");pending={t:"student",u};myId=u.id;toast("Returning student login: "+u.name);showWelcome()}
+function myPage(){const a=$("#app");const u=D.students[myId.toUpperCase()];const recs=u?D.records.filter(r=>r.uid==u.id):[];const cur=recs.find(r=>!r.exit);
+a.innerHTML=`<h2>My Parking</h2><div class="card"><form id="mf"><label>Register Number<input name="k" value="${myId}" required></label><button class="btn">View</button></form></div>`+(u?`<div class="card"><h3>${u.name} <span class="tag ${cur?"bad":"ok"}">${cur?"Parked in "+cur.slot:"Not parked"}</span></h3><p class="muted">${u.id} • ${u.dept} • Year ${u.year} • 📞 ${u.phone}<br>🚗 ${u.veh} (${u.vt})${cur?`<br>Since ${cur.entry}`:""}</p><button class="btn" id="again">🔁 Park Again</button></div><div class="card"><h3>Parking History</h3>${tbl(recs)}</div>`:myId?`<p class="muted">No student found.</p>`:"")}
+const tbl=rs=>`<div class="tw"><table><tr><th>Name</th><th>ID</th><th>Vehicle</th><th>Slot</th><th>Type</th><th>Entry</th><th>Exit</th></tr>${rs.map(r=>`<tr><td>${r.name}</td><td>${r.uid}</td><td>${r.veh}</td><td>${r.slot}</td><td>${r.t}</td><td>${r.entry}</td><td>${r.exit||'<span class="tag bad">Parked</span>'}</td></tr>`).join("")||"<tr><td>No records</td></tr>"}</table></div>`;
+function adminPage(){const a=$("#app");if(!admin){a.innerHTML=`<div class="card" style="max-width:360px;margin:auto"><h2>🔐 Admin Login</h2><form id="af"><label class="full">Password<input type="password" name="p" required></label><button class="btn full">Login</button></form><p class="muted">Demo password: admin123</p></div>`;return}
+const ql=q.toUpperCase(),parked=D.records.filter(r=>!r.exit&&(!ql||(r.veh+r.uid+r.slot+r.name).toUpperCase().includes(ql))),by=t=>D.records.filter(r=>!r.exit&&r.t==t).length;
+const users=[...Object.values(D.students).map(x=>({...x,t:"student"})),...Object.values(D.staff).map(x=>({...x,t:"staff"})),...Object.values(D.visitors).map(x=>({...x,t:"visitor"}))].filter(x=>!ql||(x.veh+x.id+x.name).toUpperCase().includes(ql));
+a.innerHTML=`<div class="row"><h2 style="flex:1">Admin Dashboard</h2><button class="btn o s" id="lo">Logout</button></div><div class="grid"><div class="card stat">Total<b>${cnt()}</b></div><div class="card stat">Available<b>${cnt(0,"available")}</b></div><div class="card stat">Occupied<b>${cnt(0,"occupied")}</b></div><div class="card stat">Students<b>${by("student")}</b></div><div class="card stat">Staff<b>${by("staff")}</b></div><div class="card stat">Visitors<b>${by("visitor")}</b></div></div><br>
+<div class="card"><input id="sq" placeholder="🔍 Search vehicle number, register number or slot" value="${q}"></div>
+<div class="card"><h3>Currently Parked</h3><div class="tw"><table><tr><th>Name</th><th>ID</th><th>Vehicle</th><th>Slot</th><th>Type</th><th>Entry</th><th></th></tr>${parked.map(r=>`<tr><td>${r.name}</td><td>${r.uid}</td><td>${r.veh}</td><td>${r.slot}</td><td>${r.t}</td><td>${r.entry}</td><td><button class="btn s" data-exit="${r.id}">Mark Exit</button></td></tr>`).join("")||"<tr><td>None</td></tr>"}</table></div></div>
+<div class="card"><h3>Registered Users</h3><div class="tw"><table><tr><th>Name</th><th>ID</th><th>Type</th><th>Dept/Purpose</th><th>Phone</th><th>Vehicle</th><th>Licence</th></tr>${users.map(x=>`<tr><td>${x.name}</td><td>${x.id}</td><td>${x.t}</td><td>${x.dept||x.purpose||""}</td><td>${x.phone}</td><td>${x.veh}</td><td>${x.lic&&x.lic.startsWith("data:image")?`<a href="${x.lic}" target="_blank">View</a>`:"On file"}</td></tr>`).join("")||"<tr><td>None</td></tr>"}</table></div></div>
+<div class="card"><h3>Parking History</h3>${tbl(D.records.filter(r=>!ql||(r.veh+r.uid+r.slot).toUpperCase().includes(ql)))}</div>
+<div class="card"><h3>🔔 Notifications</h3>${D.notes.map(n=>`<div>${n.k?"⚠️":"✔️"} ${n.m} <span class="muted">• ${n.at}</span></div>`).join("")||"<span class=muted>None</span>"}</div>`}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-slot]");if(b){const s=D.slots[b.dataset.slot];if(s.s!="available"){return note(`Slot ${b.dataset.slot} is unavailable (${s.s}).`,"bad")}
+if(!(location.hash||"").startsWith("#/park"))return;sel=b.dataset.slot;toast("Slot "+sel+" selected");const f=$("[name=slot]");if(f)f.value=sel;document.querySelectorAll(".slot").forEach(x=>x.classList.toggle("sel",x.dataset.slot==sel));if(pending)showWelcome();return}
+if(e.target.dataset.mode){mode=e.target.dataset.mode;pending=null;sel=null;render()}
+if(e.target.dataset.go)askConfirm();
+if(e.target.id=="again"){mode="ret";pending=null;location.hash="#/park/student";setTimeout(()=>lookup(myId),50)}
+if(e.target.id=="lo"){admin=false;render()}
+const x=e.target.dataset.exit;if(x){const r=D.records.find(r=>r.id==x);r.exit=now();const s=D.slots[r.slot];s.s="available";delete s.rec;note(`Vehicle ${r.veh} exited. Slot ${r.slot} is free.`);save();render()}});
+document.addEventListener("submit",async e=>{e.preventDefault();const f=e.target,fd=new FormData(f),t=(location.hash||"").split("/")[2];
+if(f.id=="rf"){if(sel)fd.set("slot",sel);await register(t,fd)}
+if(f.id=="lf")lookup(fd.get("k"));
+if(f.id=="mf"){myId=fd.get("k").trim().toUpperCase();render()}
+if(f.id=="af"){if(fd.get("p")=="admin123"){admin=true;render()}else toast("Wrong password","bad")}});
+document.addEventListener("input",e=>{if(e.target.id=="sq"){q=e.target.value;const p=e.target.selectionStart;adminPage();const n=$("#sq");n.focus();n.setSelectionRange(p,p)}});
+window.addEventListener("hashchange",()=>{sel=null;pending=null;render()});window.addEventListener("storage",()=>{load();render()});
+load();save();render();
+</script></body></html>
